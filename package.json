@@ -6,8 +6,9 @@
   "license": "Apache-2.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "ionic serve",
+    "build": "ionic build -- --base-href '.'",
+    "build:prod": "ionic build --prod -- --base-href '.'",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "npx webdriver-manager update --standalone false --gecko false --versions.chrome=99.0.4844.83 && ng e2e --no-webdriver-update"
