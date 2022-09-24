@@ -54,5 +54,3 @@ See [CONTRIBUTING.md](https://github.com/ionic-team/ionic-conference-app/blob/ma
 1. Run `ionic cordova run ios --prod`
 
 # appraisal-app
-
-# appraisal-app
