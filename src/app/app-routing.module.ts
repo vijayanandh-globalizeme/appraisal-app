@@ -5,22 +5,25 @@ import {
   Routes,
   ExtraOptions,
 } from "@angular/router";
+import { GuestGuard, AppGuard } from "@app/core/guards";
 
 const routes: Routes = [
   {
     path: "",
-    redirectTo: "/login",
+    redirectTo: "login",
     pathMatch: "full",
   },
   {
     path: "login",
     loadChildren: () =>
-      import("./pages/login/login.module").then((m) => m.LoginModule),
+      import("./auth/login/login.module").then((m) => m.LoginModule),
+    canActivate: [GuestGuard],
   },
   {
-    path: "app",
+    path: "main",
     loadChildren: () =>
-      import("./pages/home/home.module").then((m) => m.HomePageModule),
+      import("./main/main.module").then((m) => m.MainPageModule),
+    canActivate: [AppGuard],
   },
 ];
 
