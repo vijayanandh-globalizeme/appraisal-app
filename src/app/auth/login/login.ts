@@ -4,7 +4,8 @@ import { environment } from "@environment/environment";
 import { Subscription } from "rxjs";
 import { first } from "rxjs/operators";
 
-import { AuthService, StorageService } from "@app/core/services";
+import { ErrorResponse } from "@app/core/interfaces";
+import { AuthService, StorageService, ToastrService } from "@app/core/services";
 @Component({
   selector: "page-login",
   templateUrl: "login.html",
@@ -17,7 +18,8 @@ export class LoginPage implements OnInit, OnDestroy {
     public router: Router,
     private activeroute: ActivatedRoute,
     private authService: AuthService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -49,9 +51,8 @@ export class LoginPage implements OnInit, OnDestroy {
             this.router.navigate(["/main"]);
           }
         },
-        (error) => {
-          console.log("error");
-          console.log(error);
+        (error: ErrorResponse) => {
+          this.toastr.basic(error.statusText, "warning");
         }
       );
   }

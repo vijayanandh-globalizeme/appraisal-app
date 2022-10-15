@@ -1,0 +1,10 @@
+<div [formGroup]="inputForm">
+  <ion-icon
+    class="star-rating-icon"
+    *ngFor="let number of [1, 2, 3, 4, 5]"
+    name="{{ selectValue >= number ? 'star-sharp' : 'star-outline' }}"
+    (click)="getValue(number)"
+  ></ion-icon>
+
+  <input type="hidden" [formControlName]="name" [(ngModel)]="selectValue" />
+</div>

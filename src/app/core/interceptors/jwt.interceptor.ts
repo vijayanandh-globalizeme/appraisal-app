@@ -20,11 +20,9 @@ export class JwtInterceptor implements HttpInterceptor {
     // check if this request going to be send to the PI backend API
     const isBackendDevAPI =
       request?.url && request.url.indexOf(environment.apiURL) === 0;
-    console.log("fgdfgfdfs");
     if (isBackendDevAPI) {
       const accessToken = localStorage.getItem("accessToken");
       const bodyParam = request.body;
-      console.log(accessToken);
       if (
         ((request.method == "POST" &&
           request.body &&

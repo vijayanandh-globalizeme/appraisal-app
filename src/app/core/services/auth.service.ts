@@ -11,7 +11,7 @@ export class AuthService {
   userProfile = new BehaviorSubject<UserProfile>(null);
 
   constructor(private httpService: HttpService) {}
-  getUserData() {
+  getUserData(): Observable<UserProfile> {
     return <Observable<UserProfile>>(
       this.httpService.get(ApiRoute.usersProfile, []).pipe(
         tap((user: UserProfile) => {

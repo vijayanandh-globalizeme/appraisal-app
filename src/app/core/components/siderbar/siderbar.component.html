@@ -1,0 +1,14 @@
+<ion-list>
+  <ion-menu-toggle [autoHide]="false">
+    <ion-item button>
+      <ion-icon slot="start" name="hand-right-outline"></ion-icon>
+      <ion-label> Give your Feedback </ion-label>
+    </ion-item>
+  </ion-menu-toggle>
+  <ion-menu-toggle [autoHide]="false">
+    <ion-item button (click)="logout()">
+      <ion-icon slot="start" name="log-out-outline"></ion-icon>
+      <ion-label> Logout </ion-label>
+    </ion-item>
+  </ion-menu-toggle>
+</ion-list>

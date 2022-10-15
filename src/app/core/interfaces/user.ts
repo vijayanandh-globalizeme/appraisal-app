@@ -4,3 +4,12 @@ export interface UserProfile {
   role: string;
   pics: string;
 }
+
+export interface Users {
+  data: UserDetails;
+}
+
+export interface UserDetails {
+  uuid: string;
+  name: string;
+}

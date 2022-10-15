@@ -25,7 +25,6 @@ export class AppGuard implements CanActivate {
 
   private get authUser() {
     const accessToken = localStorage.getItem("accessToken");
-    console.log(accessToken);
     if (!accessToken || accessToken == null || accessToken == undefined) {
       this.router.navigate(["/login"]);
       return false;
