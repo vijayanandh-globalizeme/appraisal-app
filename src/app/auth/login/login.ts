@@ -33,7 +33,7 @@ export class LoginPage implements OnInit, OnDestroy {
   }
 
   gotoMSLogin() {
-    this.destorySession();
+    this.authService.destorySession();
     window.location.href = `${environment.apiURL}/oauth`;
   }
 
@@ -55,13 +55,6 @@ export class LoginPage implements OnInit, OnDestroy {
           this.toastr.basic(error.statusText, "warning");
         }
       );
-  }
-
-  destorySession() {
-    this.storageService.removeItem("accessToken");
-    this.storageService.removeItem("expiredAt");
-    this.storageService.removeItem("clientData");
-    localStorage.clear();
   }
 
   ngOnDestroy() {

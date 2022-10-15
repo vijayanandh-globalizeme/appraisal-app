@@ -5,12 +5,16 @@ import { map, tap } from "rxjs/operators";
 
 import { UserProfile } from "@app/core/interfaces";
 import { ApiRoute } from "@app/core/constants";
+import { StorageService } from "@app/core/services";
 
 @Injectable({ providedIn: "root" })
 export class AuthService {
   userProfile = new BehaviorSubject<UserProfile>(null);
 
-  constructor(private httpService: HttpService) {}
+  constructor(
+    private httpService: HttpService,
+    private storageService: StorageService
+  ) {}
   getUserData(): Observable<UserProfile> {
     return <Observable<UserProfile>>(
       this.httpService.get(ApiRoute.usersProfile, []).pipe(
@@ -28,5 +32,12 @@ export class AuthService {
         (error) => false
       )
     );
+  }
+
+  destorySession() {
+    this.storageService.removeItem("accessToken");
+    this.storageService.removeItem("expiredAt");
+    this.storageService.removeItem("clientData");
+    localStorage.clear();
   }
 }

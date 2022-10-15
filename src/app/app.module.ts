@@ -10,7 +10,7 @@ import { ServiceWorkerModule } from "@angular/service-worker";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { environment } from "@environment/environment";
-import { JwtInterceptor } from "@app/core/interceptors";
+import { JwtInterceptor, ErrorInterceptor } from "@app/core/interceptors";
 
 @NgModule({
   imports: [
@@ -28,6 +28,7 @@ import { JwtInterceptor } from "@app/core/interceptors";
   providers: [
     InAppBrowser,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })
