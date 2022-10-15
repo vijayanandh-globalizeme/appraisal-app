@@ -1,0 +1,66 @@
+<app-header [headerTitle]="headerTitle"></app-header>
+<ion-content class="ion-padding">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <form [formGroup]="reviewForm" (ngSubmit)="submitReview()">
+          <h2>Please select colleague and give your feedback</h2>
+          <ion-row>
+            <ion-col size-md="4">
+              <div class="form-floating">
+                <select
+                  class="form-select"
+                  id="floatingSelect"
+                  aria-label="Floating label select example"
+                  formControlName="user_id"
+                >
+                  <option value="{{user.uuid}}" *ngFor="let user of users">
+                    {{user.name}}
+                  </option>
+                </select>
+                <label for="floatingSelect">Select Colleague</label>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row class="m-t-2 m-b-2">
+            <ion-col
+              class="form-star-input"
+              size="12"
+              size-sm="6"
+              *ngFor="let question of questions; let index = index"
+              formArrayName="review"
+            >
+              <label class="form-label">{{question.label}}</label>
+              <app-star-rating
+                [name]="question.name"
+                [inputForm]="reviewForm.get('review').at(index)"
+              ></app-star-rating>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size-md="8">
+              <div class="form-floating">
+                <textarea
+                  class="form-control"
+                  placeholder="Leave a comment here"
+                  id="floatingTextarea"
+                  rows="6"
+                  formControlName="comments"
+                  style="height: 100%"
+                ></textarea>
+                <label for="floatingTextarea">Comments</label>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12" size-sm="3"
+              ><ion-button expand="full" type="submit" [disabled]="loading"
+                >Submit</ion-button
+              >
+            </ion-col>
+          </ion-row>
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
