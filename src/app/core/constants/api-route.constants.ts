@@ -4,4 +4,5 @@ export const ApiRoute = {
   getUsers: "get-users",
   getRevQuestion: "review-question",
   saveReview: "save-review",
+  getReview: "get-reviews",
 };

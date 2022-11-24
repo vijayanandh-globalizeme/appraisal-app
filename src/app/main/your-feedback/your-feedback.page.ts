@@ -14,6 +14,7 @@ import {
   ReviewQuestionService,
   UserReviewService,
   ToastrService,
+  UserService,
 } from "@app/core/services";
 
 @Component({
@@ -23,17 +24,18 @@ import {
 })
 export class YourFeedbackPage implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
-  headerTitle: string = "Your feedback";
   users: UserDetails;
   questions: Question[];
   reviewForm: FormGroup;
   loading = false;
+  menus: any = [{ name: "Your Feedback", class: "active" }];
 
   constructor(
     private questionService: ReviewQuestionService,
     public formBuilder: FormBuilder,
     public toastr: ToastrService,
-    private reviewService: UserReviewService
+    private reviewService: UserReviewService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -56,7 +58,7 @@ export class YourFeedbackPage implements OnInit, OnDestroy {
 
   getUserList() {
     this.subscriptions.add(
-      this.questionService.getUsers().subscribe((resolve: Users) => {
+      this.userService.getUsers().subscribe((resolve: Users) => {
         this.users = resolve.data;
       })
     );

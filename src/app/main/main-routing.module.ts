@@ -20,7 +20,17 @@ const routes: Routes = [
             (m) => m.YourFeedbackPageModule
           ),
       },
+      {
+        path: "users",
+        loadChildren: () =>
+          import("./users/users.module").then((m) => m.UsersPageModule),
+      },
     ],
+  },
+  {
+    path: "users",
+    loadChildren: () =>
+      import("./users/users.module").then((m) => m.UsersPageModule),
   },
 ];
 

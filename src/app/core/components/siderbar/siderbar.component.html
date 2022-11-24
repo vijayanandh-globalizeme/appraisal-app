@@ -1,8 +1,14 @@
 <ion-list>
   <ion-menu-toggle [autoHide]="false">
-    <ion-item button>
+    <ion-item button (click)="navtigateToPage('main/your-feedback')">
       <ion-icon slot="start" name="hand-right-outline"></ion-icon>
       <ion-label> Give your Feedback </ion-label>
+    </ion-item>
+  </ion-menu-toggle>
+  <ion-menu-toggle [autoHide]="false">
+    <ion-item button (click)="navtigateToPage('main/users')">
+      <ion-icon slot="start" name="people-outline"></ion-icon>
+      <ion-label> Users </ion-label>
     </ion-item>
   </ion-menu-toggle>
   <ion-menu-toggle [autoHide]="false">

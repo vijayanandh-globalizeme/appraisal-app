@@ -1,0 +1,18 @@
+.user-card{
+    --padding-start: 0;
+    padding: 0.5rem;
+
+    & > ion-row{
+        border-radius: 5px;
+        padding: 6px;
+        box-shadow: 0px 1px 8px #cecece;
+
+        ion-thumbnail{
+            --size: 64px;
+        }
+    }
+    & > ion-row:hover{
+        box-shadow: 4px 5px 11px #a19f9f;
+        transition: transform 2s;
+    }
+}

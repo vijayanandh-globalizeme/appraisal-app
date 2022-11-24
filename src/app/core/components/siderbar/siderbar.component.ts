@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 
-import { StorageService, ToastrService } from "@app/core/services";
+import { StorageService, ToastrService, AuthService } from "@app/core/services";
 
 @Component({
   selector: "app-siderbar",
@@ -12,14 +12,16 @@ export class SiderbarComponent {
   constructor(
     public router: Router,
     private storageService: StorageService,
-    public toastr: ToastrService
+    public toastr: ToastrService,
+    private authService: AuthService
   ) {}
 
+  navtigateToPage(pageName) {
+    this.router.navigate([pageName]);
+  }
+
   logout() {
-    this.storageService.removeItem("accessToken");
-    this.storageService.removeItem("expiredAt");
-    this.storageService.removeItem("clientData");
-    localStorage.clear();
+    this.authService.destorySession();
     this.router.navigate(["/login"]);
     this.toastr.basic("Logged out Successfully.");
   }
