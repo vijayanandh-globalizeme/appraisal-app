@@ -34,6 +34,15 @@ export class AuthService {
     );
   }
 
+  validateAccess() {
+    return this.httpService.post(ApiRoute.validateAccess, []).pipe(
+      map(
+        (res) => true,
+        (error) => false
+      )
+    );
+  }
+
   destorySession() {
     this.storageService.removeItem("accessToken");
     this.storageService.removeItem("expiredAt");
