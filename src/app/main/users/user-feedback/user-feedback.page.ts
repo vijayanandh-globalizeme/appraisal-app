@@ -2,7 +2,10 @@ import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { Subscription } from "rxjs";
 
-import { UserReviewService } from "@app/core/services/";
+import { UserReviewService, ReviewQuestionService } from "@app/core/services/";
+import { UserReviewsModel, UserReviewModel } from "@app/core/models";
+import { environment } from "@environment/environment";
+import { Question, ReviewQuestions } from "@app/core/interfaces";
 @Component({
   selector: "app-user-feedback",
   templateUrl: "./user-feedback.page.html",
@@ -14,11 +17,17 @@ export class UserFeedbackPage implements OnInit {
   user: any = [];
   selectBoxYear = [2022, 2023];
   currentYear: number = new Date().getFullYear();
+  selectedYear: number = 2022;
+  userReviews: UserReviewModel[] = [];
+  isModalOpen = false;
+  selectedRwItem: UserReviewModel;
+  questions: Question[];
 
   constructor(
     private activeroute: ActivatedRoute,
     private router: Router,
-    private userReviewService: UserReviewService
+    private userReviewService: UserReviewService,
+    private questionService: ReviewQuestionService
   ) {}
 
   ngOnInit() {
@@ -29,6 +38,7 @@ export class UserFeedbackPage implements OnInit {
           this.user = data;
           this.menus[1] = { name: data?.name, class: "active" };
           this.getAllreview();
+          this.getReviewQuestions();
         } else {
           this.router.navigate(["/main/users"]);
         }
@@ -36,14 +46,59 @@ export class UserFeedbackPage implements OnInit {
     );
   }
 
-  getAllreview() {
+  userAvatar(id) {
+    return `${environment.apiURL}/user/${id}/avatar`;
+  }
+
+  setOpen(isOpen: boolean, review: UserReviewModel) {
+    console.log(isOpen);
+    this.isModalOpen = isOpen;
+    if (isOpen) {
+      this.selectedRwItem = review;
+    }
+  }
+
+  getReviewQuestions() {
     this.subscriptions.add(
-      this.userReviewService
-        .getAllreviews(this.user.uuid)
-        .subscribe((resolve) => {
-          console.log(resolve);
+      this.questionService
+        .getQuestions()
+        .subscribe((resolve: ReviewQuestions) => {
+          this.questions = resolve.data;
         })
     );
+  }
+
+  filterSelectValue(value) {
+    let selectedValue;
+    this.selectedRwItem.data.forEach((currentValue) => {
+      if (
+        currentValue[value] &&
+        currentValue[value] != undefined &&
+        currentValue[value] != null
+      ) {
+        selectedValue = currentValue[value];
+      }
+    });
+    return selectedValue;
+  }
+
+  getAllreview() {
+    this.userReviews = [];
+    this.subscriptions.add(
+      this.userReviewService
+        .getAllreviews(this.user.uuid, this.selectedYear)
+        .subscribe((resolve: UserReviewsModel) => {
+          const reviewData = new UserReviewsModel(resolve.data);
+          reviewData.data.filter((reviews) => {
+            this.userReviews.push(new UserReviewModel(reviews));
+          });
+        })
+    );
+  }
+
+  changYear(year) {
+    this.selectedYear = year;
+    this.getAllreview();
   }
 
   ngOnDestroy() {
