@@ -1,6 +1,6 @@
-<app-header [headerTitle]="headerTitle"></app-header>
 <ion-content class="ion-padding">
-  <ion-grid>
+  <ion-grid class="m-t-4">
+    <app-breadcrumb [menus]="menus"></app-breadcrumb>
     <ion-row>
       <ion-col>
         <form [formGroup]="reviewForm" (ngSubmit)="submitReview()">

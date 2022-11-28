@@ -1,0 +1,9 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb m-b-0">
+    <li class="breadcrumb-item"><a (click)="goToPage('/')">Home</a></li>
+    <li *ngFor="let menu of menus" class="breadcrumb-item">
+      <a *ngIf="!menu.class" (click)="goToPage(menu.href)">{{ menu.name }}</a>
+      <span *ngIf="menu?.class == 'active'" href="#">{{ menu.name }}</span>
+    </li>
+  </ol>
+</nav>

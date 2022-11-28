@@ -1,0 +1,20 @@
+.user-cmts{
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.card-header{
+    background: #f4f4f4;
+    margin: 16px 8px;
+    padding: 0 10px;
+}
+.form-floating {
+    margin: 10px 0;
+}
+.hg-comments{
+    margin-top: 2rem;
+    background: #f3f3f3;
+    padding: 1rem;
+}

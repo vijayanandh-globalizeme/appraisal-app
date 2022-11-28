@@ -20,7 +20,9 @@ export class HttpService {
   }
 
   get(serviceName: string, data: any) {
-    return this.httpClient.get(environment.apiURL + "/" + serviceName);
+    return this.httpClient.get(environment.apiURL + "/" + serviceName, {
+      params: data,
+    });
   }
 
   delete(serviceName: string) {

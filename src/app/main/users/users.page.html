@@ -1,0 +1,45 @@
+<ion-content class="ion-padding">
+  <ion-grid class="m-t-4">
+    <app-breadcrumb [menus]="menus"></app-breadcrumb>
+    <ion-row>
+      <ion-col>
+        <ion-searchbar
+          placeholder="Colleage Name"
+          [debounce]="1000"
+          (ionChange)="handleChange($event)"
+        ></ion-searchbar>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid>
+    <ion-row>
+      <ion-col
+        *ngFor="let user of users"
+        class="cursor-pointer pd-st-0 user-card"
+        (click)="navigateToUser(user)"
+        size="12"
+        size-sm="6"
+      >
+        <ion-row>
+          <ion-col size="3" size-sm="2">
+            <ion-thumbnail item-left class="user-thumbnail-default">
+              <img src="{{userAvatar(user.uuid)}}" />
+            </ion-thumbnail>
+          </ion-col>
+          <ion-col size="9" size-sm="10">
+            <ion-row>
+              <ion-col>
+                <ion-text>{{ user.name }}</ion-text>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-text color="primary"> ({{user.email}}) </ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

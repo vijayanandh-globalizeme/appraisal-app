@@ -1,0 +1,121 @@
+<ion-content class="ion-padding">
+  <ion-grid class="m-t-4">
+    <app-breadcrumb [menus]="menus"></app-breadcrumb>
+    <ion-row class="card-header">
+      <ion-col size="12" size-sm="8">
+        <ion-row>
+          <ion-col size="3" size-sm="2">
+            <ion-thumbnail item-left class="user-thumbnail-default">
+              <img src="{{userAvatar(user.uuid)}}" />
+            </ion-thumbnail>
+          </ion-col>
+          <ion-col size="9" size-sm="10">
+            <ion-row>
+              <ion-col>
+                <ion-text>{{ user.name }}</ion-text>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-text color="primary"> ({{user.email}}) </ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col size="12" size-sm="4">
+        <div class="form-floating">
+          <select
+            class="form-select"
+            aria-label="Floating label select example"
+            (change)="changYear($event.target.value)"
+          >
+            <option
+              value="{{year}}"
+              [selected]="year == currentYear"
+              *ngFor="let year of selectBoxYear"
+            >
+              {{year}}
+            </option>
+          </select>
+          <label for="floatingSelect">Select Year</label>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid *ngIf="userReviews.length > 0;else emptyMessage">
+    <ion-row>
+      <ion-col
+        *ngFor="let review of userReviews"
+        size="12"
+        size-sm="6"
+        class="user-card"
+        expand="block"
+        (click)="setOpen(true, review)"
+      >
+        <ion-row>
+          <ion-col>
+            <ion-row>
+              <ion-col
+                ><ion-text color="medium"
+                  >{{ review.created_at }}</ion-text
+                ></ion-col
+              >
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <app-star-rating
+                  [isDisabled]="true"
+                  [selectedValue]="review.total"
+                ></app-star-rating>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-text><b>Comments: </b> </ion-text>
+                <ion-text color="medium" class="user-cmts"
+                  >{{ review.comments }}</ion-text
+                >
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ng-template #emptyMessage>
+    <p class="label label-warning">No Results found.</p>
+  </ng-template>
+
+  <ion-modal [isOpen]="isModalOpen" [backdropDismiss]="false">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Review details</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="setOpen(false)">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-row>
+          <ion-col
+            size="12"
+            size-sm="6"
+            *ngFor="let question of questions; let index = index"
+          >
+            <label class="form-label">{{question.label}}</label>
+            <app-star-rating
+              [isDisabled]="true"
+              [selectedValue]="filterSelectValue(question.name)"
+            ></app-star-rating>
+          </ion-col>
+        </ion-row>
+        <p *ngIf="selectedRwItem.comments" class="hg-comments">
+          <b>Comments:</b><br />{{selectedRwItem.comments}}
+        </p>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

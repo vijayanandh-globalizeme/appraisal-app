@@ -1,10 +1,16 @@
-<div [formGroup]="inputForm">
+<div [formGroup]="inputForm" *ngIf="!isDisabled">
   <ion-icon
     class="star-rating-icon"
     *ngFor="let number of [1, 2, 3, 4, 5]"
     name="{{ selectValue >= number ? 'star-sharp' : 'star-outline' }}"
     (click)="getValue(number)"
   ></ion-icon>
-
   <input type="hidden" [formControlName]="name" [(ngModel)]="selectValue" />
+</div>
+<div *ngIf="isDisabled">
+  <ion-icon
+    class="star-rating-icon disabled"
+    *ngFor="let number of [1, 2, 3, 4, 5]"
+    [name]="checkMathValue(selectedValue, number)"
+  ></ion-icon>
 </div>

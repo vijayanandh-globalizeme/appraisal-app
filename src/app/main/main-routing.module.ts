@@ -2,6 +2,7 @@ import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 
 import { MainPage } from "./main.page";
+import { RolesGuard } from "@app/core/guards";
 
 const routes: Routes = [
   {
@@ -19,6 +20,12 @@ const routes: Routes = [
           import("./your-feedback/your-feedback.module").then(
             (m) => m.YourFeedbackPageModule
           ),
+      },
+      {
+        path: "users",
+        loadChildren: () =>
+          import("./users/users.module").then((m) => m.UsersPageModule),
+        canActivate: [RolesGuard],
       },
     ],
   },

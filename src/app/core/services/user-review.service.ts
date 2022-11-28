@@ -11,4 +11,7 @@ export class UserReviewService {
   saveUserReview(data) {
     return this.httpService.post(ApiRoute.saveReview, data);
   }
+  getAllreviews(id: string, year: number) {
+    return this.httpService.get(ApiRoute.getReview + "/" + id, { year: year });
+  }
 }
