@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiURL: "http://localhost:8000/api/v1",
+  apiURL: "https://api.gm365.globalizeme.com/api/v1",
 };
