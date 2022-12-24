@@ -16,6 +16,7 @@ import {
   ToastrService,
   UserService,
 } from "@app/core/services";
+import { QuestionModel } from "@app/core/models";
 
 @Component({
   selector: "app-your-feedback",
@@ -47,7 +48,6 @@ export class YourFeedbackPage implements OnInit, OnDestroy {
   buildForm() {
     this.reviewForm = this.formBuilder.group({
       user_id: ["", [Validators.required]],
-      comments: ["", [Validators.required]],
       review: this.formBuilder.array([]),
     });
   }
@@ -70,6 +70,9 @@ export class YourFeedbackPage implements OnInit, OnDestroy {
         .getQuestions()
         .subscribe((resolve: ReviewQuestions) => {
           this.questions = resolve.data;
+          this.questions.filter((data, index) => {
+            this.questions[index] = new QuestionModel(data);
+          });
           this.addFieldsToForm();
         })
     );
@@ -78,7 +81,8 @@ export class YourFeedbackPage implements OnInit, OnDestroy {
   addFieldsToForm() {
     this.questions.forEach((element) => {
       const newField = {};
-      newField[element.name] = ["", [Validators.required]];
+      const validator = element.isRequired ? [Validators.required] : [];
+      newField[element.name] = ["", validator];
       this.reviewFields().push(this.formBuilder.group(newField));
     });
   }

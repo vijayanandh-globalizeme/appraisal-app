@@ -1,10 +1,27 @@
-.form-star-input{
-    margin-bottom: 1rem;
-
-    .form-label{
+.pd-left-1{
+    padding-left: 0.5rem;
+}
+.required:after {
+    content:" *";
+    color: red;
+}
+.user-review{
+    .form-star-input{
+        margin-bottom: 1rem;
+    
+        .form-label{
+            display: block;
+        }
+    }
+    ion-radio-group{
         display: block;
+        
+        .custom-radio-btn{
+            display: inline-block;
+        }
+    }
+    ion-textarea, ion-input{
+        border: 1px solid #ced4da;
+        border-radius: 0.375rem;
     }
 }
-
-
-

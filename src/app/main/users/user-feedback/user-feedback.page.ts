@@ -21,7 +21,7 @@ export class UserFeedbackPage implements OnInit {
   userReviews: UserReviewModel[] = [];
   isModalOpen = false;
   selectedRwItem: UserReviewModel;
-  questions: Question[];
+  questions: any = [];
 
   constructor(
     private activeroute: ActivatedRoute,
@@ -51,7 +51,6 @@ export class UserFeedbackPage implements OnInit {
   }
 
   setOpen(isOpen: boolean, review: UserReviewModel) {
-    console.log(isOpen);
     this.isModalOpen = isOpen;
     if (isOpen) {
       this.selectedRwItem = review;
@@ -63,9 +62,30 @@ export class UserFeedbackPage implements OnInit {
       this.questionService
         .getQuestions()
         .subscribe((resolve: ReviewQuestions) => {
-          this.questions = resolve.data;
+          let questionArry = [];
+          if (resolve.data.length > 0) {
+            resolve.data.forEach((data) => {
+              questionArry[data.name] = data;
+            });
+          }
+          this.questions = questionArry;
         })
     );
+  }
+
+  getLabel(data: any): string {
+    return this.questions[Object.keys(data)[0]].label;
+  }
+
+  getValue(data: any): string {
+    return data[Object.keys(data)[0]];
+  }
+
+  isStarValue(data: any): boolean {
+    if (this.questions[Object.keys(data)[0]].type == "STAR") {
+      return true;
+    }
+    return false;
   }
 
   filterSelectValue(value) {

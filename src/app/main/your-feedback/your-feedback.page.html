@@ -3,7 +3,11 @@
     <app-breadcrumb [menus]="menus"></app-breadcrumb>
     <ion-row>
       <ion-col>
-        <form [formGroup]="reviewForm" (ngSubmit)="submitReview()">
+        <form
+          [formGroup]="reviewForm"
+          class="user-review"
+          (ngSubmit)="submitReview()"
+        >
           <h2>Please select colleague and give your feedback</h2>
           <ion-row>
             <ion-col size-md="4">
@@ -18,38 +22,49 @@
                     {{user.name}}
                   </option>
                 </select>
-                <label for="floatingSelect">Select Colleague</label>
+                <label for="floatingSelect" class="required"
+                  >Select Colleague</label
+                >
               </div>
             </ion-col>
           </ion-row>
-          <ion-row class="m-t-2 m-b-2">
+          <ion-row class="m-t-2 m-b-2" formArrayName="review">
             <ion-col
               class="form-star-input"
               size="12"
-              size-sm="6"
               *ngFor="let question of questions; let index = index"
-              formArrayName="review"
+              formGroupName="{{index}}"
             >
-              <label class="form-label">{{question.label}}</label>
+              <label class="form-label" [class.required]="question.isRequired"
+                >{{question.label}}</label
+              >
+              <ion-input
+                *ngIf="question.type=='TEXT'"
+                formControlName="{{question.name}}"
+              ></ion-input>
+              <ion-textarea
+                *ngIf="question.type=='TEXTAREA'"
+                formControlName="{{question.name}}"
+              ></ion-textarea>
+              <ion-radio-group
+                value="custom-checked"
+                *ngIf="question.type=='RADIO'"
+                formControlName="{{question.name}}"
+              >
+                <ion-item
+                  class="custom-radio-btn"
+                  *ngFor="let option of question.options;"
+                  lines="none"
+                >
+                  <ion-radio value="{{option.value}}"></ion-radio>
+                  <ion-label class="pd-left-1">{{option.label}}</ion-label>
+                </ion-item>
+              </ion-radio-group>
               <app-star-rating
+                *ngIf="question.type=='STAR'"
                 [name]="question.name"
                 [inputForm]="reviewForm.get('review').at(index)"
               ></app-star-rating>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col size-md="8">
-              <div class="form-floating">
-                <textarea
-                  class="form-control"
-                  placeholder="Leave a comment here"
-                  id="floatingTextarea"
-                  rows="6"
-                  formControlName="comments"
-                  style="height: 100%"
-                ></textarea>
-                <label for="floatingTextarea">Comments</label>
-              </div>
             </ion-col>
           </ion-row>
           <ion-row>
