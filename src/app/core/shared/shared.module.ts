@@ -7,6 +7,7 @@ import {
   HeaderComponent,
   SiderbarComponent,
   BreadcrumbComponent,
+  StepsComponent,
 } from "@app/core/components/";
 
 @NgModule({
@@ -15,6 +16,7 @@ import {
     HeaderComponent,
     SiderbarComponent,
     BreadcrumbComponent,
+    StepsComponent,
   ],
   imports: [CommonModule, FormsModule, IonicModule, ReactiveFormsModule],
   exports: [
@@ -22,6 +24,7 @@ import {
     HeaderComponent,
     SiderbarComponent,
     BreadcrumbComponent,
+    StepsComponent,
   ],
 })
 export class SharedModule {}

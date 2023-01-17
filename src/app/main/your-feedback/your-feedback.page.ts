@@ -1,6 +1,7 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { Subscription } from "rxjs";
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { IonContent } from "@ionic/angular";
 
 import {
   Users,
@@ -9,6 +10,8 @@ import {
   UserDetails,
   SuccessResponse,
   ErrorResponse,
+  QCategories,
+  QCategory,
 } from "@app/core/interfaces";
 import {
   ReviewQuestionService,
@@ -17,6 +20,8 @@ import {
   UserService,
 } from "@app/core/services";
 import { QuestionModel } from "@app/core/models";
+import { StepsService } from "@app/core/services/steps.service";
+import { StepModel } from "@app/core/models/step.model";
 
 @Component({
   selector: "app-your-feedback",
@@ -30,19 +35,29 @@ export class YourFeedbackPage implements OnInit, OnDestroy {
   reviewForm: FormGroup;
   loading = false;
   menus: any = [{ name: "Your Feedback", class: "active" }];
+  currentStep: StepModel;
+  questionCat: QCategory[];
+  showQuestion: boolean = false;
+  selectedCatIndex: number = 1;
+  @ViewChild("pageTop") pageTop: IonContent;
 
   constructor(
     private questionService: ReviewQuestionService,
     public formBuilder: FormBuilder,
     public toastr: ToastrService,
     private reviewService: UserReviewService,
-    private userService: UserService
+    private userService: UserService,
+    private stepsService: StepsService
   ) {}
 
   ngOnInit() {
     this.buildForm();
     this.getUserList();
     this.getReviewQuestions();
+  }
+
+  triggerEvent() {
+    if (!this.showQuestion) this.showQuestion = true;
   }
 
   buildForm() {
@@ -66,15 +81,16 @@ export class YourFeedbackPage implements OnInit, OnDestroy {
 
   getReviewQuestions() {
     this.subscriptions.add(
-      this.questionService
-        .getQuestions()
-        .subscribe((resolve: ReviewQuestions) => {
-          this.questions = resolve.data;
-          this.questions.filter((data, index) => {
-            this.questions[index] = new QuestionModel(data);
-          });
-          this.addFieldsToForm();
-        })
+      this.questionService.getQuestions().subscribe((resolve: any) => {
+        this.questions = resolve.data;
+        this.questionCat = resolve.category;
+        this.stepsService.pushStepCount(this.questionCat.length);
+        this.questions.filter((data, index) => {
+          this.questions[index] = new QuestionModel(data);
+        });
+        this.currentStep = this.stepsService.steps$[0];
+        this.addFieldsToForm();
+      })
     );
   }
 
@@ -85,6 +101,21 @@ export class YourFeedbackPage implements OnInit, OnDestroy {
       newField[element.name] = ["", validator];
       this.reviewFields().push(this.formBuilder.group(newField));
     });
+  }
+
+  triggerForm(type) {
+    if (
+      type == "next" &&
+      this.currentStep.stepIndex != this.questionCat.length
+    ) {
+      this.stepsService.moveToNextStep(this.currentStep.stepIndex);
+      this.currentStep = this.stepsService.currentStep$;
+    }
+    if (type == "previous") {
+      this.stepsService.moveToPrevStep(this.currentStep.stepIndex);
+      this.currentStep = this.stepsService.currentStep$;
+    }
+    this.pageTop.scrollToTop();
   }
 
   submitReview() {
@@ -99,8 +130,12 @@ export class YourFeedbackPage implements OnInit, OnDestroy {
     this.reviewService.saveUserReview(this.reviewForm.value).subscribe(
       (data: SuccessResponse) => {
         this.reviewForm.reset();
+        this.currentStep = this.stepsService.steps$[0];
         this.toastr.basic("Your review submitted Successfully!!!");
         this.loading = false;
+        this.pageTop.scrollToTop();
+        this.stepsService.pushStepCount(this.questionCat.length);
+        this.stepsService.resetStepperCount();
       },
       (error: ErrorResponse) => {
         this.toastr.basic(error.statusText, "warning");

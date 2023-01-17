@@ -18,10 +18,64 @@
         
         .custom-radio-btn{
             display: inline-block;
+            --background: #f9f9f9;
+            color: #7a7a7a;
+            font-weight: 500;
         }
     }
     ion-textarea, ion-input{
         border: 1px solid #ced4da;
         border-radius: 0.375rem;
     }
+}
+
+
+
+.form-page-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+.step-page-container {
+    flex: 1;
+    margin: 0px 32px;
+}
+
+.form-continue-btn {
+    background: rgb(50, 10, 229);
+    margin: 32px;
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed !important;
+    }
+}
+
+.common-btn {
+    color: #fff;
+    background: rgb(50, 10, 229);
+    padding: 20px;
+    border-radius: 50px;
+    font-size: 1.15em;
+    cursor: pointer;
+    border: none !important;
+}
+.dynamic-inputs{
+    display: none;
+
+    h3{
+        background: #d8d6d6;
+        margin: 0;
+        padding: 0.5rem 0.8rem;
+        font-size: 27px;
+    }
+    & > div{
+        background: #f9f9f9;
+        padding: 1rem 0.8rem 0;
+    }
+}
+.show{
+    display: block !important;
 }

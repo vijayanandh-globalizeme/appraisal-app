@@ -5,6 +5,7 @@ export class QuestionModel {
   type: string;
   options: any;
   isRequired: boolean;
+  categoryId: number;
 
   constructor(data) {
     this.id = data.id || "";
@@ -12,6 +13,7 @@ export class QuestionModel {
     this.label = data.label || "";
     this.type = data.type || "";
     this.isRequired = data.isRequired || 0;
+    this.categoryId = data.category_id || 1;
     this.options = JSON.parse(data.options) || [];
   }
 }

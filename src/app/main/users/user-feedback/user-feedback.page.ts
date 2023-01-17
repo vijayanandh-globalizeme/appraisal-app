@@ -17,7 +17,7 @@ export class UserFeedbackPage implements OnInit {
   user: any = [];
   selectBoxYear = [2022, 2023];
   currentYear: number = new Date().getFullYear();
-  selectedYear: number = 2022;
+  selectedYear: number = 2023;
   userReviews: UserReviewModel[] = [];
   isModalOpen = false;
   selectedRwItem: UserReviewModel;
