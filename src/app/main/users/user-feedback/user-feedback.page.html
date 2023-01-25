@@ -94,10 +94,10 @@
         <ion-accordion-group [value]="['Others']">
           <ion-accordion
             *ngFor="let category of questionCat"
-            value="{{category.Name}}"
+            value="{{category.name}}"
           >
             <ion-item slot="header" color="light">
-              <ion-label>{{category.Name}}</ion-label>
+              <ion-label>{{category.name}}</ion-label>
             </ion-item>
             <div class="ion-padding" slot="content">
               <ion-row>

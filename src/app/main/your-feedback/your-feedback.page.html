@@ -43,7 +43,7 @@
                   class="dynamic-inputs"
                   [class.show]="(QIndex+1)==currentStep.stepIndex"
                 >
-                  <h3>{{category.Name}}</h3>
+                  <h3>{{category.name}}</h3>
                   <div formArrayName="review">
                     <div
                       *ngFor="let question of questions; let index = index"
