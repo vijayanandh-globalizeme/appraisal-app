@@ -12,7 +12,7 @@ export class UserReviewModel {
   comments: string;
   created_at: string;
   data: any;
-  total: string;
+  total: number;
   pipe = new DatePipe("en-US");
 
   constructor(data) {

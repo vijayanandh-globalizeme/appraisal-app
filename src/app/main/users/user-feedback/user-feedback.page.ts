@@ -5,7 +5,7 @@ import { Subscription } from "rxjs";
 import { UserReviewService, ReviewQuestionService } from "@app/core/services/";
 import { UserReviewsModel, UserReviewModel } from "@app/core/models";
 import { environment } from "@environment/environment";
-import { Question, ReviewQuestions } from "@app/core/interfaces";
+import { QCategory, Question, ReviewQuestions } from "@app/core/interfaces";
 @Component({
   selector: "app-user-feedback",
   templateUrl: "./user-feedback.page.html",
@@ -22,6 +22,7 @@ export class UserFeedbackPage implements OnInit {
   isModalOpen = false;
   selectedRwItem: UserReviewModel;
   questions: any = [];
+  questionCat: any;
 
   constructor(
     private activeroute: ActivatedRoute,
@@ -54,38 +55,38 @@ export class UserFeedbackPage implements OnInit {
     this.isModalOpen = isOpen;
     if (isOpen) {
       this.selectedRwItem = review;
+      this.mapQuestionWithCategory();
     }
   }
 
   getReviewQuestions() {
     this.subscriptions.add(
-      this.questionService
-        .getQuestions()
-        .subscribe((resolve: ReviewQuestions) => {
-          let questionArry = [];
-          if (resolve.data.length > 0) {
-            resolve.data.forEach((data) => {
-              questionArry[data.name] = data;
-            });
-          }
-          this.questions = questionArry;
-        })
+      this.questionService.getQuestions().subscribe((resolve: any) => {
+        let questionArry = [];
+        if (resolve.data.length > 0) {
+          this.questionCat = resolve.category;
+          resolve.data.forEach((data) => {
+            questionArry[data.name] = data;
+          });
+        }
+        this.questions = questionArry;
+      })
     );
   }
 
-  getLabel(data: any): string {
-    return this.questions[Object.keys(data)[0]].label;
-  }
-
-  getValue(data: any): string {
-    return data[Object.keys(data)[0]];
-  }
-
-  isStarValue(data: any): boolean {
-    if (this.questions[Object.keys(data)[0]].type == "STAR") {
-      return true;
-    }
-    return false;
+  mapQuestionWithCategory() {
+    this.questionCat.forEach((category, index) => {
+      let reviewData = [];
+      this.selectedRwItem.data.forEach((data) => {
+        if (this.questions[Object.keys(data)[0]].category_id == category.id) {
+          data.question = this.questions[Object.keys(data)[0]].label;
+          data.value = data[Object.keys(data)[0]];
+          data.type = this.questions[Object.keys(data)[0]].type;
+          reviewData.push(data);
+        }
+      });
+      this.questionCat[index]["data"] = reviewData;
+    });
   }
 
   filterSelectValue(value) {
@@ -109,11 +110,24 @@ export class UserFeedbackPage implements OnInit {
         .getAllreviews(this.user.uuid, this.selectedYear)
         .subscribe((resolve: UserReviewsModel) => {
           const reviewData = new UserReviewsModel(resolve.data);
-          reviewData.data.filter((reviews) => {
+          reviewData.data.filter((reviews, index) => {
             this.userReviews.push(new UserReviewModel(reviews));
+            this.userReviews[index].total = this.getStarValue(
+              this.userReviews[index].data
+            );
           });
         })
     );
+  }
+
+  getStarValue(data: any) {
+    let starCount: number;
+    data.forEach((value) => {
+      if (Object.keys(value)[0] == "overall") {
+        starCount = value[Object.keys(value)[0]];
+      }
+    });
+    return starCount;
   }
 
   changYear(year) {

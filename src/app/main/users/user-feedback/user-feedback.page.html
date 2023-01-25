@@ -67,7 +67,7 @@
               <ion-col>
                 <app-star-rating
                   [isDisabled]="true"
-                  [selectedValue]="review.data[2].overall"
+                  [selectedValue]="review.total"
                 ></app-star-rating>
               </ion-col>
             </ion-row>
@@ -91,28 +91,38 @@
         </ion-toolbar>
       </ion-header>
       <ion-content class="ion-padding">
-        <ion-row>
-          <ion-col
-            size="12"
-            *ngFor="let review of selectedRwItem.data; let index = index"
+        <ion-accordion-group [value]="['Others']">
+          <ion-accordion
+            *ngFor="let category of questionCat"
+            value="{{category.Name}}"
           >
-            <div *ngIf="getValue(review)!=null&&getValue(review)!=''">
-              <label class="form-label">{{getLabel(review)}}</label>
-              <div *ngIf="isStarValue(review);else other_content">
-                <app-star-rating
-                  [isDisabled]="true"
-                  [selectedValue]="getValue(review)"
-                ></app-star-rating>
-              </div>
+            <ion-item slot="header" color="light">
+              <ion-label>{{category.Name}}</ion-label>
+            </ion-item>
+            <div class="ion-padding" slot="content">
+              <ion-row>
+                <ion-col
+                  size="12"
+                  *ngFor="let review of category.data; let index = index"
+                >
+                  <label class="form-label">{{review.question}}</label>
+                  <div *ngIf="review.type=='STAR';else other_content">
+                    <app-star-rating
+                      [isDisabled]="true"
+                      [selectedValue]="review.value"
+                    ></app-star-rating>
+                  </div>
 
-              <ng-template #other_content>
-                <ion-text color="primary">
-                  <p><b>{{getValue(review)}}</b></p>
-                </ion-text>
-              </ng-template>
+                  <ng-template #other_content>
+                    <ion-text color="primary">
+                      <p><b>{{review.value}}</b></p>
+                    </ion-text>
+                  </ng-template>
+                </ion-col>
+              </ion-row>
             </div>
-          </ion-col>
-        </ion-row>
+          </ion-accordion>
+        </ion-accordion-group>
       </ion-content>
     </ng-template>
   </ion-modal>
