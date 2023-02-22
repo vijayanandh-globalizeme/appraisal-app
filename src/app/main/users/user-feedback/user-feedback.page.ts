@@ -23,6 +23,7 @@ export class UserFeedbackPage implements OnInit {
   selectedRwItem: UserReviewModel;
   questions: any = [];
   questionCat: any;
+  downloadDisabled: boolean = false;
 
   constructor(
     private activeroute: ActivatedRoute,
@@ -133,6 +134,16 @@ export class UserFeedbackPage implements OnInit {
   changYear(year) {
     this.selectedYear = year;
     this.getAllreview();
+  }
+
+  downloadPdf() {
+    window.open(
+      environment.apiURL +
+        "/download-report/" +
+        this.selectedRwItem.id +
+        "/download",
+      "_blank"
+    );
   }
 
   ngOnDestroy() {

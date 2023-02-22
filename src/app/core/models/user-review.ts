@@ -9,6 +9,7 @@ export class UserReviewsModel {
 }
 
 export class UserReviewModel {
+  id: number;
   comments: string;
   created_at: string;
   data: any;
@@ -16,6 +17,7 @@ export class UserReviewModel {
   pipe = new DatePipe("en-US");
 
   constructor(data) {
+    this.id = data.id || 0;
     this.comments = data.comments || "";
     this.created_at = this.pipe.transform(data.created_at, "fullDate") || "";
     this.data = JSON.parse(data.data) || "";

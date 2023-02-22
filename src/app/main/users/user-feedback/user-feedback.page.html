@@ -91,6 +91,9 @@
         </ion-toolbar>
       </ion-header>
       <ion-content class="ion-padding">
+        <ion-button (click)="downloadPdf()" [disabled]="downloadDisabled"
+          >Download</ion-button
+        >
         <ion-accordion-group [value]="['Others']">
           <ion-accordion
             *ngFor="let category of questionCat"
